@@ -1,0 +1,8 @@
+@namespace ("net.aimeizi.person")
+protocol PersonService
+{
+    import schema "Person.avsc";
+    import schema "QueryParameter.avsc";
+    string ping();
+    array<net.aimeizi.person.Person> getPersonList(net.aimeizi.person.QueryParameter queryParameter);
+}

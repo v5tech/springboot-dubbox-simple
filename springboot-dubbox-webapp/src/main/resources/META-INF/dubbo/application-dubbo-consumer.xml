@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://code.alibabatech.com/schema/dubbo
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <bean class="net.aimeizi.config.RestServiceConfig">
+        <property name="baseUrl" value="http://localhost:8000/services/user/"/>
+    </bean>
+
+    <dubbo:application name="dubbo-consumer" organization="dubbo" owner="aimeizi"/>
+
+    <dubbo:registry address="zookeeper://127.0.0.1:2181" protocol="zookeeper"/>
+
+    <dubbo:reference id="userService" interface="net.aimeizi.user.UserService"/>
+
+    <dubbo:reference id="personService" interface="net.aimeizi.person.PersonService"/>
+
+    <dubbo:reference id="orderService" interface="net.aimeizi.order.OrderService$Iface"/>
+
+</beans>

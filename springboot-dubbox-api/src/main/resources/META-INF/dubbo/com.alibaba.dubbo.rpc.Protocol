@@ -1,0 +1,2 @@
+avro=com.alibaba.dubbo.rpc.protocol.avro.AvroProtocol
+thrift2=com.alibaba.dubbo.rpc.protocol.thrift2.Thrift2Protocol

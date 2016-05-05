@@ -1,0 +1,27 @@
+{
+  "namespace": "net.aimeizi.person",
+  "type": "record",
+  "name": "Person",
+  "fields": [
+    {
+      "name": "age",
+      "type": "int"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "sex",
+      "type": "boolean"
+    },
+    {
+      "name": "salary",
+      "type": "double"
+    },
+    {
+      "name": "childrenCount",
+      "type": "int"
+    }
+  ]
+}

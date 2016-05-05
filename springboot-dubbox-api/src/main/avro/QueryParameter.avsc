@@ -1,0 +1,15 @@
+{
+  "namespace": "net.aimeizi.person",
+  "type": "record",
+  "name": "QueryParameter",
+  "fields": [
+    {
+      "name": "ageStart",
+      "type": "int"
+    },
+    {
+      "name": "ageEnd",
+      "type": "int"
+    }
+  ]
+}

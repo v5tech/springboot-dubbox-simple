@@ -1,0 +1,43 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	   http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <context:component-scan base-package="net.aimeizi.service"/>
+
+    <!-- 提供方应用信息，用于计算依赖关系 -->
+    <dubbo:application name="dubbo-provider" organization="dubbo" owner="aimeizi"/>
+
+    <!-- 使用multicast广播注册中心暴露服务地址 -->
+    <dubbo:registry address="zookeeper://127.0.0.1:2181" protocol="zookeeper"/>
+
+    <!-- 用dubbo协议在20880端口暴露服务 -->
+    <dubbo:protocol name="dubbo" port="20880" serialization="kryo" optimizer="net.aimeizi.SerializationOptimizerImpl" server="netty" iothreads="10" threads="500"/>
+
+    <dubbo:protocol name="avro" port="40001"/>
+
+    <dubbo:protocol name="thrift2" port="33201"/>
+
+    <!-- rest -->
+    <dubbo:protocol name="rest" port="8000" threads="500" server="tomcat" accepts="500"
+                    contextpath="services" extension="net.aimeizi.extension.ValidationExceptionMapper"/>
+
+    <dubbo:service interface="net.aimeizi.person.PersonService" protocol="avro"
+                   ref="personService" timeout="10000" filter="serviceFilter"/>
+
+    <dubbo:service interface="net.aimeizi.user.UserService" protocol="dubbo"
+                   ref="userService" timeout="10000" filter="serviceFilter"/>
+
+    <!--<dubbo:protocol name="http" port="8080" server="jetty" contextpath="services" />-->
+    <!--<dubbo:protocol name="http" port="8080" server="servlet" contextpath="services"/>-->
+
+    <dubbo:service interface="net.aimeizi.user.UserRestService" ref="userRestService" protocol="rest"
+                   validation="true" timeout="10000" connections="100" filter="serviceFilter"/>
+
+    <dubbo:service interface="net.aimeizi.order.OrderService$Iface" protocol="thrift2"
+                   ref="orderService" timeout="10000" filter="serviceFilter"/>
+
+</beans>
