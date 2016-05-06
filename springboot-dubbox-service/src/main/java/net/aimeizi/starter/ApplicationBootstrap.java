@@ -5,6 +5,7 @@ package net.aimeizi.starter;
  * Created by Administrator on 2016/5/4 0004.
  */
 public class ApplicationBootstrap {
+
     public static void main(String[] args) throws Exception {
 
 //        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[] {"classpath:META-INF/spring/application-dubbo-provider.xml"});
@@ -13,4 +14,5 @@ public class ApplicationBootstrap {
 
         com.alibaba.dubbo.container.Main.main(args);
     }
+
 }

@@ -1,4 +1,4 @@
-package net.aimeizi.user;
+package net.aimeizi.student;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,18 +13,21 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
+/**
+ * Created by Administrator on 2016/5/6 0006.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class User implements Serializable {
+public class Student implements Serializable {
 
     /**
-     * 用户ID
+     * 学生ID
      */
-    @Range(min = 1, max = Long.MAX_VALUE, message = "userId必须大于0")
-    private Long userId;
+    @Range(min = 1, max = Long.MAX_VALUE, message = "Id必须大于0")
+    private  Long id;
 
     /**
      * 用户名
@@ -33,17 +36,4 @@ public class User implements Serializable {
     @NotNull(message = "名称不能为空")
     @Length(min = 2, max = 20, message = "名称长度范围为2-20位字符")
     private String name;
-
-    /**
-     * 密码
-     */
-    @Length(min = 8, message = "密码长度不能低于8位")
-    private String password;
-
-    /**
-     * 年龄
-     */
-    @Range(min = 0, max = 150, message = "年龄只能在0-150岁之间")
-    private Integer age;
-
 }

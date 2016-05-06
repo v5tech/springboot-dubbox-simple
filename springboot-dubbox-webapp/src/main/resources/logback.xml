@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <contextName>dubbo-consumer</contextName>
+
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <!-- logback为java中的包 -->
+    <logger name="net.aimeizi" level="INFO"/>
+
+    <logger name="com.alibaba.dubbo" level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+</configuration>

@@ -1,4 +1,4 @@
-package net.aimeizi.extension;
+package net.aimeizi.exception;
 
 
 import com.alibaba.dubbo.rpc.protocol.rest.RpcExceptionMapper;
@@ -10,6 +10,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.core.Response;
 
+/**
+ * 异常校验
+ */
 public class ValidationExceptionMapper extends RpcExceptionMapper {
 
     protected Response handleConstraintViolationException(ConstraintViolationException cve) {

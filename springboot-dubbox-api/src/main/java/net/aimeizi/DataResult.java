@@ -4,10 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import net.aimeizi.user.User;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import java.io.Serializable;
 
 @Setter
@@ -15,7 +13,6 @@ import java.io.Serializable;
 @ToString
 @NoArgsConstructor
 @XmlRootElement
-@XmlSeeAlso(User.class)
 public class DataResult<T> implements Serializable {
 
 

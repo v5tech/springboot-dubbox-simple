@@ -39,13 +39,11 @@ public class ServiceConsumer {
         UserService dubboService = context.getBean(UserService.class, "userService");
         System.out.println("dubboService ping:" + dubboService.ping());
 
-
         PersonService avroService = context.getBean("personService", PersonService.class);
         System.out.println("avroService ping:" + avroService.ping());
 
         OrderService.Iface thriftService = context.getBean("orderService", OrderService.Iface.class);
         System.out.println("thriftService ping:" + thriftService.ping());
-
 
         rpcTest(dubboService);
 

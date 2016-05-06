@@ -11,33 +11,125 @@
     <!-- 提供方应用信息，用于计算依赖关系 -->
     <dubbo:application name="dubbo-provider" organization="dubbo" owner="aimeizi"/>
 
+    <!-- 注册dubbo监控中心 -->
+
+    <!--<dubbo:monitor protocol="registry"/>-->
+
+    <!--*********************************************dubbo注册中心配置开始*********************************************-->
+
     <!-- 使用multicast广播注册中心暴露服务地址 -->
-    <dubbo:registry address="zookeeper://127.0.0.1:2181" protocol="zookeeper"/>
+
+    <dubbo:registry protocol="multicast" address="224.5.6.7:1234"/>
+    <!--<dubbo:registry address="multicast://224.5.6.7:1234" />-->
+
+    <!-- 使用zookeeper注册中心暴露服务地址 -->
+
+    <dubbo:registry protocol="zookeeper" address="127.0.0.1:2181"/>
+    <!--<dubbo:registry address="zookeeper://127.0.0.1:2181"/>-->
+
+    <!--zookeeper集群配置-->
+    <!--<dubbo:registry protocol="zookeeper" address="127.0.0.1:2181,192.168.0.100:2181,192.168.0.102:2181" />-->
+    <!--<dubbo:registry address="zookeeper://127.0.0.1:2181?backup=192.168.0.100:2181,192.168.0.102:2181" />-->
+
+    <!--使用redis注册中心暴露服务地址-->
+
+    <dubbo:registry protocol="redis" address="127.0.0.1:6379" />
+    <!--<dubbo:registry protocol="redis" address="127.0.0.1:6379,192.168.0.100:6379,192.168.0.102:6379" />-->
+
+    <!--redis集群配置-->
+    <!--<dubbo:registry address="redis://127.0.0.1:6379" />-->
+    <!--<dubbo:registry address="redis://127.0.0.1:6379?backup=192.168.0.100:6379,192.168.0.102:6379" />-->
+
+    <!--*********************************************dubbo注册中心配置结束*********************************************-->
+
+
+    <!--***********************************************dubbo协议配置开始***********************************************-->
 
     <!-- 用dubbo协议在20880端口暴露服务 -->
     <dubbo:protocol name="dubbo" port="20880" serialization="kryo" optimizer="net.aimeizi.SerializationOptimizerImpl" server="netty" iothreads="10" threads="500"/>
+
+    <!--配置序列化方式-->
+    <!--要让Kryo和FST完全发挥出高性能，最好将那些需要被序列化的类注册到dubbo系统中,实现SerializationOptimizer回调接口-->
+    <!--<dubbo:protocol name="dubbo" port="20880" serialization="fst" optimizer="net.aimeizi.SerializationOptimizerImpl"/>-->
+    <!--<dubbo:protocol name="dubbo" serialization="nativejava"/>-->
+    <!--<dubbo:protocol name="dubbo" serialization="hessian2"/>-->
+    <!--<dubbo:protocol name="dubbo" serialization="fastjson"/>-->
+    <!--<dubbo:protocol name="dubbo" serialization="dubbo"/>-->
 
     <dubbo:protocol name="avro" port="40001"/>
 
     <dubbo:protocol name="thrift2" port="33201"/>
 
-    <!-- rest -->
+    <!-- use tomcat server -->
+    <!-- use the external tomcat or other server with the servlet approach; the port and contextpath must be exactly the same as those in external server -->
     <dubbo:protocol name="rest" port="8000" threads="500" server="tomcat" accepts="500"
-                    contextpath="services" extension="net.aimeizi.extension.ValidationExceptionMapper"/>
+                    contextpath="services" extension="com.alibaba.dubbo.rpc.protocol.rest.support.LoggingFilter,net.aimeizi.exception.ValidationExceptionMapper"/>
+    <!-- com.alibaba.dubbo.rpc.protocol.rest.support.LoggingFilter 配置HTTP日志输出 -->
 
-    <dubbo:service interface="net.aimeizi.person.PersonService" protocol="avro"
-                   ref="personService" timeout="10000" filter="serviceFilter"/>
+    <!-- use netty server -->
+    <!--<dubbo:protocol name="rest" port="8888" keepalive="true" server="netty" iothreads="5" threads="100" contextpath="services"/>-->
 
-    <dubbo:service interface="net.aimeizi.user.UserService" protocol="dubbo"
-                   ref="userService" timeout="10000" filter="serviceFilter"/>
+    <!-- use tjws server -->
+    <!--<dubbo:protocol name="rest" port="8888" server="tjws" contextpath="services"/>-->
 
     <!--<dubbo:protocol name="http" port="8080" server="jetty" contextpath="services" />-->
+
     <!--<dubbo:protocol name="http" port="8080" server="servlet" contextpath="services"/>-->
 
+    <!--<dubbo:protocol name="hessian" port="8890"/>-->
+
+    <!--<dubbo:protocol name="webservice" port="8892"/>-->
+
+    <!--
+        注意：
+        1、若指定了contextpath如services则在访问的时候需要请求路径为http://localhost:8080/services/users/1.json
+        2、server指定为servlet时需要在web.xml中做相应配置。具体请参考web.xml配置注意发布到tomcat端口和contextpath需要一致
+    -->
+
+    <!--***********************************************dubbo协议配置结束***********************************************-->
+
+
+    <!--***********************************************dubbo服务配置开始***********************************************-->
+
+
+    <!--*******************************************dubbo服务配置，xml配置方式*******************************************-->
+
+    <!--使用avro协议-->
+    <dubbo:service interface="net.aimeizi.person.PersonService" protocol="avro"
+                   ref="personService" timeout="10000" filter="serviceFilter"/>
+    <!--使用dubbo协议-->
+    <dubbo:service interface="net.aimeizi.user.UserService" protocol="dubbo"
+                   ref="userService" timeout="10000" filter="serviceFilter"/>
+    <!--使用rest协议-->
     <dubbo:service interface="net.aimeizi.user.UserRestService" ref="userRestService" protocol="rest"
                    validation="true" timeout="10000" connections="100" filter="serviceFilter"/>
-
+    <!--使用thrift2协议-->
     <dubbo:service interface="net.aimeizi.order.OrderService$Iface" protocol="thrift2"
                    ref="orderService" timeout="10000" filter="serviceFilter"/>
 
+    <bean id="studentService" class="net.aimeizi.service.student.StudentServiceImpl"/>
+
+    <bean id="studentRestService" class="net.aimeizi.service.student.StudentRestServiceImpl">
+        <property name="studentService" ref="studentService"/>
+    </bean>
+
+    <bean id="anotherStudentRestService" class="net.aimeizi.service.student.AnotherStudentRestServiceImpl">
+        <property name="studentService" ref="studentService"/>
+    </bean>
+
+    <!--使用dubbo:server暴露服务-->
+    <dubbo:service interface="net.aimeizi.student.StudentService" ref="studentService" protocol="dubbo" group="xmlConfig"/>
+    <!--
+    注意：
+        这里的group="xmlConfig"配置是为了与AnnotationDrivenStudentRestServiceImpl中的group = "annotationConfig"区分
+    -->
+    <dubbo:service interface="net.aimeizi.student.StudentRestService" ref="studentRestService" protocol="rest" validation="true"/>
+    <dubbo:service interface="net.aimeizi.student.AnotherStudentRestService" ref="anotherStudentRestService" protocol="rest"  timeout="2000" connections="100" validation="true"/>
+
+    <!--*********************************************dubbo服务配置,注解方式*********************************************-->
+
+    <!-- 扫描注解包路径，多个包用逗号分隔，不填pacakge表示扫描当前ApplicationContext中所有的类 -->
+    <dubbo:annotation package="net.aimeizi.service.student"/>
+    <!--扫描net.aimeizi.service.student.AnnotationDrivenStudentRestServiceImpl-->
+    <!--***********************************************dubbo服务配置结束***********************************************-->
 </beans>

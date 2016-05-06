@@ -4,13 +4,12 @@
 
 <web-app>
 
-    <!--
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:META-INF/spring/application-dubbo-provider.xml</param-value>
     </context-param>
-    -->
 
+    <!--this listener must be defined before the spring listener-->
     <listener>
         <listener-class>com.alibaba.dubbo.remoting.http.servlet.BootstrapListener</listener-class>
     </listener>
