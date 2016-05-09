@@ -10,7 +10,10 @@
     http://code.alibabatech.com/schema/dubbo
     http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-    <context:component-scan base-package="net.aimeizi.controller"/>
+    <dubbo:annotation/>
+    <context:component-scan base-package="net.aimeizi.controller">
+        <context:include-filter type="annotation" expression="com.alibaba.dubbo.config.annotation.Reference"/>
+    </context:component-scan>
 
     <bean class="net.aimeizi.config.RestServiceConfig">
         <property name="baseUrl" value="http://localhost:8000/services/user/"/>

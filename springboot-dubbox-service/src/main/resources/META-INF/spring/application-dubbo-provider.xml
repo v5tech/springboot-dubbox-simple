@@ -117,7 +117,7 @@
         <property name="studentService" ref="studentService"/>
     </bean>
 
-    <!--使用dubbo:server暴露服务-->
+    <!--使用dubbo:service暴露服务-->
     <dubbo:service interface="net.aimeizi.student.StudentService" ref="studentService" protocol="dubbo" group="xmlConfig"/>
     <!--
     注意：
